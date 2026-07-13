@@ -1,0 +1,86 @@
+{
+  "outfit": [
+    {
+      "id": "body-flesh",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "hair_front-n_earthelementgrab2020greenhighlightsshort",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "hair_back-n_earthelementgrab2020greenhighlightsshort",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "nose-n_01",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "eyebrow-n_aprilfoolsinvisible2020eyebrows",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "mouth-n_aprilfoolsinvisible2020mouth",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "shirt-n_tattoodo2020kickoffgiftshirt",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "pants-n_julyrubydailies2020rubybaggypants",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "eye-n_aprilfoolsinvisible2020eyes",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "freckle-n_registrationavatars2023contour",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "shoes-n_julyrubydailies2020rubysneakers",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "glasses-n_julyrubydailies2020rubyglasses",
+      "type": "clothing",
+      "amount": 1
+    },
+    {
+      "id": "handbag-n_magicrewards2021magicbat",
+      "type": "clothing",
+      "amount": 1
+    }
+  ],
+  "saved_at": "2026-07-03T00:03:26.942539",
+  "total_items": 13,
+  "items_list": [
+    "body-flesh",
+    "hair_front-n_earthelementgrab2020greenhighlightsshort",
+    "hair_back-n_earthelementgrab2020greenhighlightsshort",
+    "nose-n_01",
+    "eyebrow-n_aprilfoolsinvisible2020eyebrows",
+    "mouth-n_aprilfoolsinvisible2020mouth",
+    "shirt-n_tattoodo2020kickoffgiftshirt",
+    "pants-n_julyrubydailies2020rubybaggypants",
+    "eye-n_aprilfoolsinvisible2020eyes",
+    "freckle-n_registrationavatars2023contour",
+    "shoes-n_julyrubydailies2020rubysneakers",
+    "glasses-n_julyrubydailies2020rubyglasses",
+    "handbag-n_magicrewards2021magicbat"
+  ]
+}
