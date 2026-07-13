@@ -84,7 +84,8 @@
     "rc_33",
     "TRX.20",
     "M_66S",
-    "soos_16"
+    "soos_16",
+    "4HEB"
   ],
   "room_moderators": [
     "682bc2bc9fb4dce9e7cd4bd1",
@@ -149,10 +150,12 @@
     "61097ed83a96959592d3bd11",
     "68e27efd3142a8d672a3f355",
     "657dc863003b24d83ad52b9a",
-    "67f53b4d9d997810968b7179"
+    "67f53b4d9d997810968b7179",
+    "69862b030dbf3e01789d0cde",
+    "68533e559f9d6b88b28a778c"
   ],
   "room_owner": "65a093ba8b86d5ac39cfdbed",
   "room_king": null,
   "room_queen": null,
-  "updated_at": "2026-07-12T14:27:09.217842"
+  "updated_at": "2026-07-13T22:45:59.078758"
 }
