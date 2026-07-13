@@ -93,11 +93,13 @@ class MyBot(BaseBot):
         try:
             user_info = await self.user_manager.add_user_to_room(user, self)
             print(f"👋 {user.username} دخل الغرفة")
+            user_type = "user"
             if user_info:
-                print(f"   📊 النوع: {user_info.get('user_type', '؟')}")
+                user_type = user_info.get('user_type') or "user"
+                print(f"   📊 النوع: {user_type}")
                 print(f"   👮 مشرف: {user_info.get('is_moderator', False)}")
 
-            welcome_msg = self.responses_manager.get_welcome_response(user)
+            welcome_msg = self.responses_manager.get_welcome_message(user.username, user_type)
             if welcome_msg:
                 await self.highrise.chat(welcome_msg)
 
@@ -108,7 +110,19 @@ class MyBot(BaseBot):
     async def on_user_leave(self, user: User) -> None:
         """عند مغادرة مستخدم للغرفة"""
         try:
-            farewell_msg = self.responses_manager.get_farewell_message(user)
+            user_type = "user"
+            try:
+                stored = getattr(self.user_manager, "users", {}).get(user.id)
+                if stored:
+                    user_type = stored.get("user_type") or "user"
+            except Exception:
+                pass
+
+            farewell_msg = self.responses_manager.get_farewell_message(user.username, user_type)
+
+            if hasattr(self.user_manager, "remove_user_from_room"):
+                self.user_manager.remove_user_from_room(user)
+
             if farewell_msg:
                 await self.highrise.chat(farewell_msg)
             print(f"🚪 {user.username} غادر الغرفة")

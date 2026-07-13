@@ -17,9 +17,22 @@ class CommandsHandler:
         self.permission_checker = PermissionChecker(bot.user_manager) # تهيئة مدقق الصلاحيات
         print("📝 معالج الأوامر الموحد جاهز")
 
+    _INVISIBLE_CHARS = "\u200b\u200c\u200d\u200e\u200f\u061c\ufeff"
+
+    @classmethod
+    def _normalize_message(cls, message: str) -> str:
+        """إزالة المسافات الزائدة والرموز الخفية (RTL/ZWJ...) التي تصل من بعض لوحات المفاتيح
+        وتكسر مطابقة الأوامر القصيرة مثل 'كف'"""
+        if not message:
+            return message
+        for ch in cls._INVISIBLE_CHARS:
+            message = message.replace(ch, "")
+        return message.strip()
+
     async def handle_command(self, user, message: str, source: str = "chat") -> str:
         """معالجة الأوامر مع فحص الصلاحيات وتحديد مصدر الأمر"""
         try:
+            message = self._normalize_message(message)
             print(f"🎯 معالجة أمر: {message} من {user.username} (المصدر: {source})")
 
             # فحص الصلاحيات أولاً

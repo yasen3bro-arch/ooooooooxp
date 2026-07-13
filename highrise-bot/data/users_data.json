@@ -138,5 +138,33 @@
     "last_seen": "2026-07-13T20:48:48.547485",
     "user_type": "visitor",
     "is_active": true
+  },
+  "671e550734c9fb902c234104": {
+    "username": "XZN_",
+    "joined_at": "2026-07-13T21:27:26.604423",
+    "last_seen": "2026-07-13T21:27:26.604423",
+    "user_type": "visitor",
+    "is_active": true
+  },
+  "657dc863003b24d83ad52b9a": {
+    "username": "4HEB",
+    "joined_at": "2026-07-13T21:28:31.108112",
+    "last_seen": "2026-07-13T21:28:31.108112",
+    "user_type": "visitor",
+    "is_active": true
+  },
+  "65402b9fffc87c0146e3dcb3": {
+    "username": "HR_LY",
+    "joined_at": "2026-07-13T21:31:14.096163",
+    "last_seen": "2026-07-13T21:31:14.096163",
+    "user_type": "bot_developer",
+    "is_active": true
+  },
+  "695282df2597bc56a40951eb": {
+    "username": "sweet_Lulus",
+    "joined_at": "2026-07-13T21:32:29.596577",
+    "last_seen": "2026-07-13T21:32:29.596577",
+    "user_type": "visitor",
+    "is_active": true
   }
 }
