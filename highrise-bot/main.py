@@ -41,9 +41,11 @@ class MyBot(BaseBot):
         try:
             self.commands_handler = CommandsHandler(self)
 
+            room_info = getattr(session_metadata, "room_info", None)
+            user_info = getattr(session_metadata, "user_info", None)
             self.connection_info = {
-                "room_id":      session_metadata.room_info.room_id if hasattr(session_metadata, 'room_info') else "unknown",
-                "user_id":      session_metadata.user_info.user_id if hasattr(session_metadata, 'user_info') else "unknown",
+                "room_id":      getattr(room_info, "room_id", None) or getattr(room_info, "id", "unknown"),
+                "user_id":      getattr(user_info, "user_id", None) or getattr(user_info, "id", "unknown"),
                 "connected_at": __import__("time").time(),
             }
 
