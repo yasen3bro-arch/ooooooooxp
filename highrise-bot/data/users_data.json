@@ -202,17 +202,31 @@
     "user_type": "bot_developer",
     "is_active": true
   },
-  "5f775ed9a208fa86164d765a": {
-    "username": "rc_33",
-    "joined_at": "2026-07-16T00:56:23.312650",
-    "last_seen": "2026-07-16T00:56:23.312650",
-    "user_type": "moderator_designer",
-    "is_active": true
-  },
   "6a45961aec48379f05591a4e": {
     "username": "K.A.7.A",
     "joined_at": "2026-07-16T01:02:01.607244",
     "last_seen": "2026-07-16T01:02:01.607244",
+    "user_type": "visitor",
+    "is_active": true
+  },
+  "6062676531fe109865296dc0": {
+    "username": "l.have.no.name",
+    "joined_at": "2026-07-16T01:03:45.091320",
+    "last_seen": "2026-07-16T01:03:45.091320",
+    "user_type": "moderator_designer",
+    "is_active": true
+  },
+  "60a59982cacd118c1e6a217a": {
+    "username": "2PAC00",
+    "joined_at": "2026-07-16T01:04:20.090474",
+    "last_seen": "2026-07-16T01:04:20.090474",
+    "user_type": "moderator_designer",
+    "is_active": true
+  },
+  "6a54edcda03d4f69c1a340f1": {
+    "username": "ayouh_1",
+    "joined_at": "2026-07-16T01:07:42.592450",
+    "last_seen": "2026-07-16T01:07:42.592450",
     "user_type": "visitor",
     "is_active": true
   }

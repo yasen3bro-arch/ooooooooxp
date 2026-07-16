@@ -21,7 +21,8 @@ class ModeratorCommands:
                 "حفظ", "اذهب", "الاماكن", "احذف مكان", "عدد الاماكن",
                 "اسحبهم", "جيب @", "بدل ", "bot_dance", "رقص البوت",
                 "تغيير", "ريأكشن ", "المشرفين", "فحص @", "فحصني",
-                "احصائيات_الغرفة", "قائمة_المشرفين", "ايقاف @", "طرد @",
+                "احصائيات_الغرفة", "قائمة_المشرفين", "ثبت @", "الغ ثبت @",
+                "إلغاء_التثبيت @", "سجن @", "المثبتين", "ايقاف @", "طرد @",
                 "اضف ", "ترحيبي", "حذف ترحيبي"
             ]
 
@@ -517,6 +518,48 @@ class ModeratorCommands:
 
                 except Exception as e:
                     return f"❌ خطأ في المزامنة: {str(e)}"
+
+            # أوامر التثبيت والسجن
+            elif message.startswith("ثبت @"):
+                parts = message.split()
+                if len(parts) >= 2 and parts[1].startswith("@"):
+                    target_username = parts[1][1:]
+                    if self.bot.user_manager.is_owner(target_username):
+                        return f"❌ لا يمكن تثبيت صاحب الروم!"
+                    result = await self.freeze_user(target_username)
+                    if result.startswith("✅"):
+                        await self.bot.highrise.chat(f"💀 تم اختراق المستخدم @{target_username} - نظام الحركة معطل!")
+                    return result
+                else:
+                    return "❌ يرجى كتابة اسم المستخدم بعد 'ثبت @'"
+
+            elif message.startswith("الغ ثبت @") or message.startswith("إلغاء_التثبيت @"):
+                parts = message.split()
+                if message.startswith("الغ ثبت @"):
+                    if len(parts) >= 3 and parts[2].startswith("@"):
+                        target_username = parts[2][1:]
+                        return await self.unfreeze_user(target_username)
+                    else:
+                        return "❌ الصيغة الصحيحة: الغ ثبت @اسم_المستخدم"
+                elif message.startswith("إلغاء_التثبيت @"):
+                    if len(parts) >= 2 and parts[1].startswith("@"):
+                        target_username = parts[1][1:]
+                        return await self.unfreeze_user(target_username)
+                    else:
+                        return "❌ الصيغة الصحيحة: إلغاء_التثبيت @اسم_المستخدم"
+
+            elif message.startswith("سجن @"):
+                parts = message.split()
+                if len(parts) >= 2 and parts[1].startswith("@"):
+                    target_username = parts[1][1:]
+                    if self.bot.user_manager.is_owner(target_username):
+                        return f"❌ لا يمكن سجن صاحب الروم!"
+                    return await self.jail_user(target_username)
+                else:
+                    return "❌ يرجى كتابة اسم المستخدم بعد 'سجن @'"
+
+            elif message == "المثبتين":
+                return self.get_frozen_users_list()
 
             # أوامر الريأكشن للجميع
             elif message == "قلوب":
