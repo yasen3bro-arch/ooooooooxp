@@ -18,11 +18,19 @@ class UserCommands:
             if message.lower() in ["الأوامر", "commands", "help"]:
                 return self.get_help_message()
 
-            elif message.lower() in ["كف", "كُف", "اوقف", "وقّف"]:
+            elif message.lower() in ["اوقف", "وقّف", "كُف", "كف"] and not message.startswith("كف @") and not message.startswith("كُف @"):
                 return await self.stop_emote(user)
 
             elif message.lower() in ["stop", "توقف", "قف"]:
                 return await self.stop_emote(user)
+
+            elif message.startswith("كف @") or message.startswith("كُف @"):
+                parts = message.split()
+                if len(parts) >= 2 and parts[1].startswith("@"):
+                    target_username = parts[1][1:]
+                    return await self.slap_user(user, target_username)
+                else:
+                    return "❌ الصيغة الصحيحة: كف @اسم_المستخدم"
 
             elif message.startswith("/d "):
                 emote_code = message[3:].strip()
@@ -258,6 +266,51 @@ class UserCommands:
             except Exception as whisper_error:
                 print(f"❌ فشل في إرسال همسة الخطأ: {whisper_error}")
                 await self.bot.highrise.chat(f"⚠️ حدث خطأ في حفظ الرقصة، لكن يمكن استخدامها")
+
+    async def slap_user(self, sender, target_username: str):
+        """تنفيذ كف سباعي الابعاد على المستخدم المحدد"""
+        try:
+            # البحث عن المستخدم المستهدف في الغرفة
+            room_users = (await self.bot.highrise.get_room_users()).content
+            target_user = None
+            for room_user, _ in room_users:
+                if room_user.username.lower() == target_username.lower():
+                    target_user = room_user
+                    break
+
+            if not target_user:
+                return f"❌ المستخدم '{target_username}' غير موجود في الغرفة"
+
+            # رقصات الكف السباعي
+            slap_emotes = [
+                "emote-slap",
+                "emote-greedy",
+                "emote-slap",
+                "emote-maniac",
+                "emote-slap",
+                "emote-frustrated",
+                "emote-slap",
+            ]
+
+            # تنفيذ الرقصات على الهدف بالتسلسل
+            for emote in slap_emotes:
+                try:
+                    await self.bot.highrise.send_emote(emote, target_user.id)
+                    await asyncio.sleep(0.4)
+                except Exception:
+                    pass
+
+            # الإعلان في الشات العام
+            await self.bot.highrise.chat(
+                f"👋💥 تم ضربه كف سباعي الابعاد @{target_user.username} 💥👋\n"
+                f"الضارب: @{sender.username}"
+            )
+
+            return f"✅ تم تنفيذ الكف السباعي على {target_user.username} بنجاح!"
+
+        except Exception as e:
+            print(f"خطأ في أمر الكف: {e}")
+            return f"❌ فشل في تنفيذ الكف: {str(e)}"
 
     async def stop_emote(self, user):
         """إيقاف الرقصة التلقائية للمستخدم"""
