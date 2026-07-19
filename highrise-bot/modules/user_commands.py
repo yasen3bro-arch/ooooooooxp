@@ -4,6 +4,7 @@
 import asyncio
 import time
 import random
+from urllib.parse import urlparse, parse_qs
 from highrise import Position
 
 class UserCommands:
@@ -56,6 +57,16 @@ class UserCommands:
             elif message.isdigit():
                 emote_number = int(message)
                 return await self.execute_numeric_dance(user, emote_number)
+
+            # معالجة رابط الرقصة من Highrise (https://high.rs/item?id=emote-xxx&type=emote)
+            elif "high.rs/item" in message and "type=emote" in message:
+                return await self.execute_emote_from_link(user, message)
+
+            # معالجة اسم الرقصة مباشرة (emote-xxx / dance-xxx / idle-xxx / emoji-xxx / sit-xxx)
+            elif any(message.startswith(prefix) for prefix in [
+                "emote-", "dance-", "idle-", "emoji-", "sit-"
+            ]):
+                return await self.execute_named_dance(user, message)
 
             return None
 
@@ -117,6 +128,60 @@ class UserCommands:
         except Exception as e:
             print(f"خطأ في تنفيذ الرقصة الرقمية: {e}")
             return f"❌ فشل في تنفيذ الرقصة رقم {emote_number}"
+
+    async def execute_emote_from_link(self, user, message: str):
+        """تنفيذ الرقصة من رابط Highrise مثل https://high.rs/item?id=emote-xxx&type=emote"""
+        try:
+            # استخراج الرابط من الرسالة (قد تحتوي على نص إضافي)
+            url = message.strip()
+            for word in message.split():
+                if "high.rs/item" in word:
+                    url = word
+                    break
+
+            parsed = urlparse(url)
+            params = parse_qs(parsed.query)
+
+            emote_name = params.get("id", [None])[0]
+            emote_type = params.get("type", [""])[0]
+
+            if not emote_name or emote_type != "emote":
+                return "❌ الرابط لا يحتوي على رقصة صحيحة"
+
+            await self.bot.highrise.send_emote(emote_name, user.id)
+
+            # إيقاف الرقصة الحالية إن وجدت
+            if user.id in self.bot.auto_emotes:
+                self.bot.auto_emotes[user.id]["task"].cancel()
+
+            # بدء الرقصة التلقائية
+            task = asyncio.create_task(self.bot.repeat_emote_for_user(user.id, emote_name))
+            self.bot.auto_emotes[user.id] = {"emote": emote_name, "task": task}
+
+            return f"🎭 رقصة: {emote_name}\n🔄 ستتكرر تلقائياً حتى إيقافها بأمر 'توقف'"
+
+        except Exception as e:
+            print(f"خطأ في تنفيذ الرقصة من الرابط: {e}")
+            return f"❌ فشل في تنفيذ الرقصة من الرابط"
+
+    async def execute_named_dance(self, user, emote_name: str):
+        """تنفيذ الرقصة باسمها مباشرة"""
+        try:
+            await self.bot.highrise.send_emote(emote_name, user.id)
+
+            # إيقاف الرقصة الحالية إن وجدت
+            if user.id in self.bot.auto_emotes:
+                self.bot.auto_emotes[user.id]["task"].cancel()
+
+            # بدء الرقصة التلقائية
+            task = asyncio.create_task(self.bot.repeat_emote_for_user(user.id, emote_name))
+            self.bot.auto_emotes[user.id] = {"emote": emote_name, "task": task}
+
+            return f"🎭 رقصة: {emote_name}\n🔄 ستتكرر تلقائياً حتى إيقافها بأمر 'توقف'"
+
+        except Exception as e:
+            print(f"خطأ في تنفيذ الرقصة بالاسم {emote_name}: {e}")
+            return f"❌ الرقصة '{emote_name}' غير موجودة أو غير متاحة"
 
     async def handle_emote_discovery(self, emote_code: str, user):
         """معالجة اكتشاف الرقصة حسب الخطوات المطلوبة"""

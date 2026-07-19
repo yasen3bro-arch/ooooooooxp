@@ -115,6 +115,7 @@ class EmotesManager:
             509: "dance-griddy",
             510: "dance-twerk",
             511: "dance-ballet",
+            512: "emote-meditate-idle",
         }
 
         self.load_emotes_data()

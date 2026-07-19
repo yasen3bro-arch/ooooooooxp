@@ -686,6 +686,14 @@ class ModeratorCommands:
                 else:
                     return "❌ الصيغة الصحيحة: طرد @اسم_المستخدم"
 
+            elif message.startswith("باند @"):
+                parts = message.split()
+                if len(parts) >= 2 and parts[1].startswith("@"):
+                    target_username = parts[1][1:]
+                    return await self.ban_user(target_username)
+                else:
+                    return "❌ الصيغة الصحيحة: باند @اسم_المستخدم"
+
             
 
             elif message == "ايقاف_الملاحقة":
@@ -838,6 +846,35 @@ class ModeratorCommands:
         except Exception as e:
             print(f"❌ خطأ في طرد {target_username}: {e}")
             return f"❌ فشل في طرد {target_username}: {str(e)}"
+
+    async def ban_user(self, target_username: str) -> str:
+        """حظر مستخدم من الغرفة"""
+        try:
+            room_users = (await self.bot.highrise.get_room_users()).content
+            target_user_id = None
+
+            for room_user, _ in room_users:
+                if room_user.username.lower() == target_username.lower():
+                    target_user_id = room_user.id
+                    break
+
+            if not target_user_id:
+                return f"❌ المستخدم '{target_username}' غير موجود في الغرفة"
+
+            if target_user_id == self.bot.user_manager.bot_id:
+                return "❌ لا يمكن حظر البوت نفسه!"
+
+            if self.bot.user_manager.is_owner(target_username):
+                return f"❌ لا يمكن حظر صاحب البوت!"
+
+            await self.bot.highrise.moderate_room(target_user_id, "ban")
+            await self.bot.highrise.chat(f"🚫 تم حظر {target_username} من الغرفة!")
+            print(f"✅ تم حظر {target_username} من الغرفة")
+            return f"✅ تم حظر {target_username} بنجاح"
+
+        except Exception as e:
+            print(f"❌ خطأ في حظر {target_username}: {e}")
+            return f"❌ فشل في حظر {target_username}: {str(e)}"
 
     async def pull_users_around_moderator(self, moderator_user: User) -> str:
         """سحب المستخدمين حول المشرف في شكل مربع"""
